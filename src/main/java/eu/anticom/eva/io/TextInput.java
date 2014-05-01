@@ -4,12 +4,18 @@ import eu.anticom.eva.event.*;
 
 import java.util.Scanner;
 
-public class TextInput extends EventEmitter implements Runnable {
+public class TextInput extends EventEmitter implements IOModule, Runnable {
     public boolean running;
 
     public TextInput() {
 
     }
+
+    @Override
+    public void boot() {}
+
+    @Override
+    public void shutdown() {}
 
     @Override
     public void run() {

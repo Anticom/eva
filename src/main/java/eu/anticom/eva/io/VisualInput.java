@@ -2,12 +2,11 @@ package eu.anticom.eva.io;
 
 import eu.anticom.eva.event.EventEmitter;
 
-public class VisualInput extends EventEmitter {
-    public void startWatching() {
+public class VisualInput extends EventEmitter implements IOModule {
 
-    }
+    @Override
+    public void boot() {}
 
-    public void stopWatching() {
-
-    }
+    @Override
+    public void shutdown() {}
 }

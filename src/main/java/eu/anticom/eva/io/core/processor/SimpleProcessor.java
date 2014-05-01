@@ -58,12 +58,16 @@ public class SimpleProcessor extends EventEmitter implements Processor {
             }
 
             if(sentence.equals("shutdown")) {
+                System.exit(0);
+            }
+
+            if(sentence.startsWith("say:")) {
+                String toSay = sentence.substring(4);
                 try {
-                    emit(new OutputEvent("Shutting down my System."));
+                    emit(new OutputEvent(toSay));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.exit(0);
             }
         }
     }

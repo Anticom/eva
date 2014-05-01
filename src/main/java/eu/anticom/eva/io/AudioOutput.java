@@ -6,13 +6,17 @@ import eu.anticom.eva.event.AbstractEvent;
 import eu.anticom.eva.event.EventListener;
 import eu.anticom.eva.event.OutputEvent;
 
-public class AudioOutput implements Runnable, EventListener {
+public class AudioOutput implements IOModule, Runnable, EventListener {
     protected static final String VOICE_NAME = "kevin16";
     protected Voice voice;
 
-    public AudioOutput() {
+    @Override
+    public void boot() {
         listAllVoices();
     }
+
+    @Override
+    public void shutdown() {}
 
     @Override
     public void run() {

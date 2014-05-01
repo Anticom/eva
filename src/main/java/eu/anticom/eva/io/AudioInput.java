@@ -9,14 +9,14 @@ import eu.anticom.eva.event.EventEmitter;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AudioInput extends EventEmitter {
+public class AudioInput extends EventEmitter implements IOModule {
     protected Configuration configuration;
     protected LiveSpeechRecognizer lsr;
     protected StreamSpeechRecognizer ssr;
 
     //region constructors
-    public AudioInput(Configuration configuration) {
-        this.configuration = configuration;
+    public AudioInput() {
+        this.configuration = getAudioInputConfiguration();
 
         try {
             lsr = new LiveSpeechRecognizer(configuration);
@@ -34,11 +34,17 @@ public class AudioInput extends EventEmitter {
     }
     //endregion
 
-    //region high-level API
-    public void startListening() {
+    @Override
+    public void boot() {
         lsr.startRecognition(true);
     }
 
+    @Override
+    public void shutdown() {
+        lsr.stopRecognition();
+    }
+
+    //region high-level API
     public SpeechResult listen() {
         return lsr.getResult();
     }
@@ -69,4 +75,29 @@ public class AudioInput extends EventEmitter {
         return ssr;
     }
     //endregion
+
+    protected Configuration getAudioInputConfiguration() {
+        Configuration configuration = new Configuration();
+        configuration.setAcousticModelPath("resource:/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz");
+        configuration.setDictionaryPath("resource:/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz/dict/cmudict.0.6d");
+        configuration.setLanguageModelPath("models/language/en-us.lm.dmp");
+
+        //configuration.setAcousticModelPath("resource:/sphinx/en/acoustic");
+        //configuration.setDictionaryPath("resource:/sphinx/en/acoustic/dict/cmudict.0.6d");
+        configuration.setLanguageModelPath("resource:/sphinx/en/language/cmusphinx-5.0-en-us.lm.dmp");
+
+        /*
+        //some validation should be done with this
+        configuration.getAcousticModelPath();
+        configuration.getDictionaryPath();
+        configuration.getGrammarPath();
+        configuration.getLanguageModelPath();
+
+        configuration.getGrammarName();
+        configuration.getSampleRate();
+        configuration.getUseGrammar();
+        */
+
+        return configuration;
+    }
 }

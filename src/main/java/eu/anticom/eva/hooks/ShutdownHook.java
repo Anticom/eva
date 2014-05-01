@@ -1,11 +1,13 @@
 package eu.anticom.eva.hooks;
 
 import eu.anticom.eva.Eva;
+import eu.anticom.eva.event.EventEmitter;
+import eu.anticom.eva.event.OutputEvent;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ShutdownHook implements Runnable {
+public class ShutdownHook extends EventEmitter implements Runnable {
     protected Eva eva;
 
     public ShutdownHook(Eva eva) {
@@ -14,17 +16,9 @@ public class ShutdownHook implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Executing shutdown hook :)");
-
-        //save configuration
-        /*
-        try {
-            eva.getConfiguration().save(new FileWriter(Eva.CONFIG_FILE));
-        } catch (IOException e) {
-            System.out.println("Unable to save configuration");
-            e.printStackTrace();
-        }
-        */
+        System.out.println("Executing shutdown hook");
+        //emit an output event
+        eva.getAudioOutput().speak("Shutting down my System.");
 
         //shutdown io's
         //TODO

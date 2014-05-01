@@ -9,12 +9,11 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) {
         Eva eva = new Eva();
-
-        System.out.println(eva.getOutputChannels());
-
+        /*
         AudioOutput audio = (AudioOutput) eva.getOutputChannels().get("audio");
         System.out.println(audio);
         audio.speak("Booting successful. All Systems are running.");
+        */
 
         /*
         String[] filenames = {

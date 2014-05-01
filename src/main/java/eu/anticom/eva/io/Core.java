@@ -8,7 +8,7 @@ import eu.anticom.eva.io.core.Environment;
 import eu.anticom.eva.io.core.ProcessorList;
 import eu.anticom.eva.io.core.processor.SimpleProcessor;
 
-public class Core extends EventEmitter implements EventListener {
+public class Core extends EventEmitter implements IOModule, EventListener {
     protected Environment environment;  //stuff like time, date, own location
 
     protected ProcessorList processors;
@@ -22,6 +22,11 @@ public class Core extends EventEmitter implements EventListener {
         //eventBus.register((Processor[]) processors.toArray());
     }
 
+    @Override
+    public void boot() {}
+
+    @Override
+    public void shutdown() {}
 
     @Override
     public void setEventBus(EventBus eventBus) {

@@ -1,6 +1,6 @@
 package eu.anticom.eva;
 
-import edu.cmu.sphinx.api.Configuration;
+import eu.anticom.eva.config.Configuration;
 import eu.anticom.eva.event.EventBus;
 import eu.anticom.eva.event.EventEmitter;
 import eu.anticom.eva.event.EventListener;
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Eva {
     protected EventBus eventBus = new EventBus();
-    protected eu.anticom.eva.config.Configuration configuration = new eu.anticom.eva.config.Configuration();
+    protected Configuration configuration = new Configuration();
 
     //region io
     protected ConcurrentHashMap<String, EventEmitter> inputChannels = new ConcurrentHashMap<String, EventEmitter>();
@@ -60,30 +60,11 @@ public class Eva {
 
     //region high-level API
     public void bootModules() {
-        //enable heavy operations
-        //getAudioInput().startListening();
-        getVisualInput().startWatching();
-
         //region threads
         textInputThread.start();
         audioOutputThread.start();
         //endregion
     }
-
-    public void wakeup() {
-        bootModules();
-    }
-
-    public void hibernate() {
-        //disable heavy operations
-        getAudioInput().stopListening();
-        getVisualInput().stopWatching();
-
-        //region threads
-        //textInputThread.
-        //endregion
-    }
-    //endregion
 
     //region getters
 
@@ -98,7 +79,7 @@ public class Eva {
         return eventBus;
     }
 
-    public eu.anticom.eva.config.Configuration getConfiguration() {
+    public Configuration getConfiguration() {
         return configuration;
     }
 
@@ -171,7 +152,7 @@ public class Eva {
             }
         }
 
-        configuration = new eu.anticom.eva.config.Configuration();
+        configuration = new Configuration();
         try {
             configuration.load(configFile);
         } catch (IOException e) {
@@ -202,6 +183,8 @@ public class Eva {
             e.printStackTrace();
         }
 
+        ((IOModule) core).boot();
+
         inputChannels.put("core", (EventEmitter) core);
         outputChannels.put("core", (EventListener) core);
     }
@@ -216,7 +199,9 @@ public class Eva {
             String val = (String) property.getValue();
 
             try {
-                inputChannels.put(key, (EventEmitter) eu.anticom.eva.util.ClassLoader.load(val));
+                IOModule module = (IOModule) ClassLoader.load(val);
+                module.boot();
+                inputChannels.put(key, (EventEmitter) module);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -241,7 +226,9 @@ public class Eva {
             String val = (String) property.getValue();
 
             try {
-                outputChannels.put(key, (EventListener) ClassLoader.load(val));
+                IOModule module = (IOModule) eu.anticom.eva.util.ClassLoader.load(val);
+                module.boot();
+                outputChannels.put(key, (EventListener) module);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -266,33 +253,6 @@ public class Eva {
         textInputThread = new Thread((Runnable) inputChannels.get("text"));
         audioOutputThread = new Thread((Runnable) outputChannels.get("audio"));
         //endregion
-    }
-    //endregion
-
-    //region auxiliaries
-    protected Configuration getAudioInputConfiguration() {
-        Configuration configuration = new Configuration();
-        configuration.setAcousticModelPath("resource:/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz");
-        configuration.setDictionaryPath("resource:/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz/dict/cmudict.0.6d");
-        configuration.setLanguageModelPath("models/language/en-us.lm.dmp");
-
-        //configuration.setAcousticModelPath("resource:/sphinx/en/acoustic");
-        //configuration.setDictionaryPath("resource:/sphinx/en/acoustic/dict/cmudict.0.6d");
-        configuration.setLanguageModelPath("resource:/sphinx/en/language/cmusphinx-5.0-en-us.lm.dmp");
-
-        /*
-        //some validation should be done with this
-        configuration.getAcousticModelPath();
-        configuration.getDictionaryPath();
-        configuration.getGrammarPath();
-        configuration.getLanguageModelPath();
-
-        configuration.getGrammarName();
-        configuration.getSampleRate();
-        configuration.getUseGrammar();
-        */
-
-        return configuration;
     }
     //endregion
 }
