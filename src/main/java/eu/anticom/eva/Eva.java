@@ -48,9 +48,10 @@ public class Eva {
         loadInputs();
         loadOutputs();
         registerIO();
-        //endregion
+        System.out.println("All modules loaded, booted and configured");
 
-        bootModules();
+        startThreads();
+        //endregion
 
         //region shutdown hook
         Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook(this)));
@@ -59,7 +60,7 @@ public class Eva {
     //endregion
 
     //region high-level API
-    public void bootModules() {
+    public void startThreads() {
         //region threads
         textInputThread.start();
         audioOutputThread.start();
@@ -199,7 +200,9 @@ public class Eva {
             String val = (String) property.getValue();
 
             try {
+                System.out.printf("Loading module: [%s]\n", val);
                 IOModule module = (IOModule) ClassLoader.load(val);
+                System.out.printf("Booting module: [%s]\n", val);
                 module.boot();
                 inputChannels.put(key, (EventEmitter) module);
             } catch (Exception e) {
@@ -226,7 +229,9 @@ public class Eva {
             String val = (String) property.getValue();
 
             try {
+                System.out.printf("Loading module: [%s]\n", val);
                 IOModule module = (IOModule) eu.anticom.eva.util.ClassLoader.load(val);
+                System.out.printf("Booting module: [%s]\n", val);
                 module.boot();
                 outputChannels.put(key, (EventListener) module);
             } catch (Exception e) {

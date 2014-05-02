@@ -5,23 +5,27 @@ import eu.anticom.eva.event.*;
 import java.util.Scanner;
 
 public class TextInput extends EventEmitter implements IOModule, Runnable {
-    public boolean running;
+    protected boolean running;
+    protected Scanner scanner;
 
     public TextInput() {
 
     }
 
     @Override
-    public void boot() {}
+    public void boot() {
+        scanner = new Scanner(System.in);
+        running = true;
+    }
 
     @Override
-    public void shutdown() {}
+    public void shutdown() {
+        running = false;
+
+    }
 
     @Override
     public void run() {
-        running = true;
-
-        Scanner scanner = new Scanner(System.in);
         while(running) {
             System.out.print("eva < ");
             String input = scanner.nextLine();

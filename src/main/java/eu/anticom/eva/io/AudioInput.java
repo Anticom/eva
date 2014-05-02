@@ -6,6 +6,7 @@ import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import eu.anticom.eva.event.EventEmitter;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,6 +17,12 @@ public class AudioInput extends EventEmitter implements IOModule {
 
     //region constructors
     public AudioInput() {
+
+    }
+    //endregion
+
+    @Override
+    public void boot() {
         this.configuration = getAudioInputConfiguration();
 
         try {
@@ -31,12 +38,22 @@ public class AudioInput extends EventEmitter implements IOModule {
             System.out.println("Eva was unable to configure Ears.");
             e.printStackTrace();
         }
-    }
-    //endregion
 
-    @Override
-    public void boot() {
         lsr.startRecognition(true);
+
+        /*
+        //some testing:
+        System.out.println("testing some audio files:");
+        String[] filenames = {
+                "src/main/resources/mp3/GetOnTheHorse.mp3",
+                "src/main/resources/mp3/TheSunIsUp.mp3"
+        };
+        for(String filename : filenames) {
+            InputStream inputStream = getInputStreamByFilename(filename);
+            SpeechResult speechResult = listenToStream(inputStream);
+            System.out.println(speechResult.getHypothesis());
+        }
+        */
     }
 
     @Override
@@ -47,10 +64,6 @@ public class AudioInput extends EventEmitter implements IOModule {
     //region high-level API
     public SpeechResult listen() {
         return lsr.getResult();
-    }
-
-    public void stopListening() {
-        lsr.stopRecognition();
     }
 
     public SpeechResult listenToStream(InputStream inputStream) {
@@ -78,13 +91,13 @@ public class AudioInput extends EventEmitter implements IOModule {
 
     protected Configuration getAudioInputConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.setAcousticModelPath("resource:/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz");
-        configuration.setDictionaryPath("resource:/WSJ_8gau_13dCep_16k_40mel_130Hz_6800Hz/dict/cmudict.0.6d");
-        configuration.setLanguageModelPath("models/language/en-us.lm.dmp");
+        // Set path to acoustic model.
+        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/acoustic/wsj");
+        // Set path to dictionary.
+        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/acoustic/wsj/dict/cmudict.0.6d");
+        // Set language model.
+        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/language/en-us.lm.dmp");
 
-        //configuration.setAcousticModelPath("resource:/sphinx/en/acoustic");
-        //configuration.setDictionaryPath("resource:/sphinx/en/acoustic/dict/cmudict.0.6d");
-        configuration.setLanguageModelPath("resource:/sphinx/en/language/cmusphinx-5.0-en-us.lm.dmp");
 
         /*
         //some validation should be done with this
@@ -99,5 +112,18 @@ public class AudioInput extends EventEmitter implements IOModule {
         */
 
         return configuration;
+    }
+
+    public static InputStream getInputStreamByFilename(String filename) {
+        File inputFile = new File(filename);
+        InputStream inputStream = null;
+        try {
+            inputStream = inputFile.toURI().toURL().openStream();
+        } catch (IOException e) {
+            System.out.println("Unable to create InputStream from file.");
+            e.printStackTrace();
+        }
+
+        return inputStream;
     }
 }

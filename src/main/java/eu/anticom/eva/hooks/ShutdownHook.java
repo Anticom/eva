@@ -16,8 +16,8 @@ public class ShutdownHook extends EventEmitter implements Runnable {
 
     @Override
     public void run() {
+        //TODO emit an output event instead of direct speaking
         System.out.println("Executing shutdown hook");
-        //emit an output event
         eva.getAudioOutput().speak("Shutting down my System.");
 
         //shutdown io's
