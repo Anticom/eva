@@ -10,9 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by User on 29.04.14.
- */
 public class AsynchronousBufferedInputStreamWrapper extends InputStream {
     volatile BufferedInputStream wrappedInputStream;
     volatile ConcurrentLinkedQueue<byte[]> dataQueue;

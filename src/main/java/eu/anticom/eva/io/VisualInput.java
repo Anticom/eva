@@ -1,8 +1,6 @@
 package eu.anticom.eva.io;
 
-import eu.anticom.eva.event.EventEmitter;
-
-public class VisualInput extends EventEmitter implements IOModule {
+public class VisualInput extends Module implements IModule {
     protected boolean running;
 
     @Override

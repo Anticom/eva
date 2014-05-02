@@ -4,7 +4,7 @@ import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventListener;
 import eu.anticom.eva.event.EventType;
 
-public class TextOutput implements IOModule, EventListener {
+public class TextOutput extends Module {
     protected boolean running;
 
     @Override
@@ -18,9 +18,7 @@ public class TextOutput implements IOModule, EventListener {
     }
 
     @Override
-    public void run() {
-
-    }
+    public void run() {}
 
     @Override
     public void recieveEvent(Event event) {

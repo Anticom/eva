@@ -9,6 +9,7 @@ import eu.anticom.eva.io.*;
 import eu.anticom.eva.util.ClassLoader;
 
 import java.io.*;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,8 +19,8 @@ public class Eva {
     protected Configuration configuration = new Configuration();
 
     //region io
-    protected ConcurrentHashMap<String, EventEmitter> inputChannels = new ConcurrentHashMap<String, EventEmitter>();
-    protected ConcurrentHashMap<String, EventListener> outputChannels = new ConcurrentHashMap<String, EventListener>();
+    protected ConcurrentHashMap<String, IModule> inputChannels = new ConcurrentHashMap<String, IModule>();
+    protected ConcurrentHashMap<String, IModule> outputChannels = new ConcurrentHashMap<String, IModule>();
     //endregion
 
     //region constants
@@ -84,11 +85,11 @@ public class Eva {
         return configuration;
     }
 
-    public ConcurrentHashMap<String, EventEmitter> getInputChannels() {
+    public ConcurrentHashMap<String, IModule> getInputChannels() {
         return inputChannels;
     }
 
-    public ConcurrentHashMap<String, EventListener> getOutputChannels() {
+    public ConcurrentHashMap<String, IModule> getOutputChannels() {
         return outputChannels;
     }
 
@@ -177,19 +178,19 @@ public class Eva {
 
     protected void loadCore() {
         String className = configuration.get("eva.io.core");
-        Object core = null;
+        IModule core = null;
         try {
-            core = ClassLoader.load(className);
+            core = (IModule) ClassLoader.load(className);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (((IOModule) core) != null) {
-            ((IOModule) core).boot();
+        if (core != null) {
+            core.boot();
         }
 
-        inputChannels.put("core", (EventEmitter) core);
-        outputChannels.put("core", (EventListener) core);
+        inputChannels.put("core", core);
+        outputChannels.put("core", core);
     }
 
     protected void loadInputs() {
@@ -203,10 +204,10 @@ public class Eva {
 
             try {
                 System.out.printf("Loading module: [%s]\n", val);
-                IOModule module = (IOModule) ClassLoader.load(val);
+                IModule module = (IModule) ClassLoader.load(val);
                 System.out.printf("Booting module: [%s]\n", val);
                 module.boot();
-                inputChannels.put(key, (EventEmitter) module);
+                inputChannels.put(key, module);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -226,10 +227,10 @@ public class Eva {
 
             try {
                 System.out.printf("Loading module: [%s]\n", val);
-                IOModule module = (IOModule) eu.anticom.eva.util.ClassLoader.load(val);
+                IModule module = (IModule) eu.anticom.eva.util.ClassLoader.load(val);
                 System.out.printf("Booting module: [%s]\n", val);
                 module.boot();
-                outputChannels.put(key, (EventListener) module);
+                outputChannels.put(key, module);
             } catch (Exception e) {
                 e.printStackTrace();
             }

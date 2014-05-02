@@ -3,7 +3,7 @@ package eu.anticom.eva.io;
 import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventListener;
 
-public class Hands implements IOModule, EventListener {
+public class Hands extends Module {
     protected boolean running;
 
     @Override
@@ -17,9 +17,7 @@ public class Hands implements IOModule, EventListener {
     }
 
     @Override
-    public void run() {
-
-    }
+    public void run() {}
 
     @Override
     public void recieveEvent(Event event) {

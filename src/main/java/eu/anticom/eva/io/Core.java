@@ -5,7 +5,7 @@ import eu.anticom.eva.io.core.Environment;
 import eu.anticom.eva.io.core.ProcessorList;
 import eu.anticom.eva.io.core.processor.SimpleProcessor;
 
-public class Core extends EventEmitter implements IOModule, EventListener {
+public class Core extends Module implements IModule {
     protected boolean running;
 
     protected Environment environment;  //stuff like time, date, own location
@@ -50,8 +50,6 @@ public class Core extends EventEmitter implements IOModule, EventListener {
     @Override
     public void recieveEvent(Event event) {
         processors.passEvent(event);
-//        System.out.println(this.getClass().toString() + " recieved event:");
-//        System.out.println(event);
     }
 
     //region getters

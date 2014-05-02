@@ -3,7 +3,7 @@ package eu.anticom.eva.hooks;
 import eu.anticom.eva.Eva;
 import eu.anticom.eva.event.EventEmitter;
 
-public class ShutdownHook extends EventEmitter implements Runnable {
+public class ShutdownHook implements Runnable {
     protected Eva eva;
 
     public ShutdownHook(Eva eva) {

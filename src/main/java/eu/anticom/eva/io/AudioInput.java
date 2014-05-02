@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AudioInput extends EventEmitter implements IOModule {
+public class AudioInput extends Module implements IModule {
     protected boolean running;
 
     protected Configuration configuration;

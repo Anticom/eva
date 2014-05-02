@@ -6,7 +6,7 @@ import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventListener;
 import eu.anticom.eva.event.EventType;
 
-public class AudioOutput implements IOModule, EventListener {
+public class AudioOutput extends Module {
     protected boolean running;
 
     protected Voice voice;
@@ -31,9 +31,7 @@ public class AudioOutput implements IOModule, EventListener {
     }
 
     @Override
-    public void run() {
-
-    }
+    public void run() {}
 
     @Override
     public void recieveEvent(Event event) {

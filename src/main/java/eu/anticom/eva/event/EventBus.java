@@ -1,5 +1,6 @@
 package eu.anticom.eva.event;
 
+import eu.anticom.eva.io.IModule;
 import eu.anticom.eva.io.core.ProcessorList;
 import eu.anticom.eva.io.core.processor.Processor;
 
@@ -7,64 +8,60 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 public class EventBus {
-    protected Vector<EventListener> registeredObjects;
+    protected Vector<IModule> registeredObjects;
 
     public EventBus() {
-        registeredObjects = new Vector<EventListener>();
+        registeredObjects = new Vector<IModule>();
     }
 
     //region bus registration
-    public void register(EventListener listener) {
+    public void register(IModule listener) {
         registeredObjects.add(listener);
     }
 
-    public void unregister(EventListener listener) {
+    public void unregister(IModule listener) {
         registeredObjects.remove(listener);
     }
     //endregion
 
     //region convenience
-    public void register(EventListener[] listeners) {
-        for(EventListener listener : listeners) {
+    public void register(IModule[] listeners) {
+        for(IModule listener : listeners) {
             register(listener);
         }
     }
 
-    public void register(Enumeration<EventListener> listeners) {
+    public void register(Enumeration<IModule> listeners) {
         while(listeners.hasMoreElements()){
-            EventListener listener = listeners.nextElement();
+            IModule listener = listeners.nextElement();
             register(listener);
         }
     }
 
-    public void connectEmitters(EventEmitter[] emitters) {
-        for(EventEmitter emitter : emitters) {
+    public void connectEmitters(IModule[] emitters) {
+        for(IModule emitter : emitters) {
             emitter.setEventBus(this);
         }
     }
 
-    public void connectEmitters(Enumeration<EventEmitter> emitters) {
+    public void connectEmitters(Enumeration<IModule> emitters) {
         while(emitters.hasMoreElements()){
-            EventEmitter emitter = emitters.nextElement();
+            IModule emitter = emitters.nextElement();
             emitter.setEventBus(this);
         }
     }
 
     public void connectProcessors(ProcessorList processors) throws Exception {
         for(Processor processor : processors) {
-            if(processor instanceof EventEmitter) {
-                ((EventEmitter) processor).setEventBus(this);
-            } else {
-                throw new Exception("Processor is unable to emit events.");
-            }
+            processor.setEventBus(this);
         }
     }
     //endregion
 
     //region messaging
     public void broadcast(Event event, Object sender) {
-        for(EventListener listener : registeredObjects) {
-            if(sender instanceof EventListener && listener == sender) continue;
+        for(IModule listener : registeredObjects) {
+            if(sender instanceof IModule && listener == sender) continue;
             listener.recieveEvent(event);
         }
     }

@@ -1,6 +1,11 @@
 package eu.anticom.eva.io;
 
-public interface IOModule extends Runnable {
+import eu.anticom.eva.event.EventBus;
+import eu.anticom.eva.event.EventListener;
+
+public interface IModule extends Runnable, EventListener {
+    public void setEventBus(EventBus eventBus);
+
     //initialisation (allocate resources etc.)
     public void boot();
     //final shutdown
