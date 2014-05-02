@@ -1,14 +1,13 @@
 package eu.anticom.eva.io;
 
-import eu.anticom.eva.event.AbstractEvent;
-import eu.anticom.eva.event.EventBus;
-import eu.anticom.eva.event.EventEmitter;
-import eu.anticom.eva.event.EventListener;
+import eu.anticom.eva.event.*;
 import eu.anticom.eva.io.core.Environment;
 import eu.anticom.eva.io.core.ProcessorList;
 import eu.anticom.eva.io.core.processor.SimpleProcessor;
 
 public class Core extends EventEmitter implements IOModule, EventListener {
+    protected boolean running;
+
     protected Environment environment;  //stuff like time, date, own location
 
     protected ProcessorList processors;
@@ -23,10 +22,19 @@ public class Core extends EventEmitter implements IOModule, EventListener {
     }
 
     @Override
-    public void boot() {}
+    public void boot() {
+        running = true;
+    }
 
     @Override
-    public void shutdown() {}
+    public void shutdown() {
+        running = false;
+    }
+
+    @Override
+    public void run() {
+
+    }
 
     @Override
     public void setEventBus(EventBus eventBus) {
@@ -40,7 +48,7 @@ public class Core extends EventEmitter implements IOModule, EventListener {
     }
 
     @Override
-    public void recieveEvent(AbstractEvent event) {
+    public void recieveEvent(Event event) {
         processors.passEvent(event);
 //        System.out.println(this.getClass().toString() + " recieved event:");
 //        System.out.println(event);

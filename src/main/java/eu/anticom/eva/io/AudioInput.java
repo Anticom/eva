@@ -4,13 +4,17 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
+import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventEmitter;
+import eu.anticom.eva.event.EventType;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class AudioInput extends EventEmitter implements IOModule {
+    protected boolean running;
+
     protected Configuration configuration;
     protected LiveSpeechRecognizer lsr;
     protected StreamSpeechRecognizer ssr;
@@ -23,6 +27,7 @@ public class AudioInput extends EventEmitter implements IOModule {
 
     @Override
     public void boot() {
+        running = true;
         this.configuration = getAudioInputConfiguration();
 
         try {
@@ -58,7 +63,24 @@ public class AudioInput extends EventEmitter implements IOModule {
 
     @Override
     public void shutdown() {
+        running = false;
         lsr.stopRecognition();
+    }
+
+    @Override
+    public void run() {
+        SpeechResult speechResult;
+        while(running) {
+            speechResult = listen();
+            String hypothesis = speechResult.getHypothesis();
+            if(!hypothesis.isEmpty()) {
+                try {
+                    emit(new Event(EventType.INPUT, this, hypothesis));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     //region high-level API

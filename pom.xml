@@ -11,7 +11,40 @@
     <name>Project EVA</name>
     <description>Electronic Virtual Assistant</description>
 
+    <issueManagement>
+        <url>https://github.com/Anticom/eva/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Anticom/eva</url>
+        <connection>scm:git:git://github.com/Anticom/eva.git</connection>
+        <developerConnection>scm:git:git@github.com:Anticom/eva.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>anticom</id>
+            <name>Timo Mühlbach</name>
+            <email>anticom@hotmail.de</email>
+            <url>https://github.com/Anticom</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <repositories>
+        <!-- STT sphinx snapshot repo -->
         <repository>
             <id>snapshots-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -44,5 +77,12 @@
             <version>1.2.2</version>
         </dependency>
 
+        <!-- testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

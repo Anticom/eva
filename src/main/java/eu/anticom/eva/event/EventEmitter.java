@@ -11,7 +11,7 @@ public class EventEmitter {
         return eventBus;
     }
 
-    protected void emit(AbstractEvent event) throws Exception {
+    protected void emit(Event event) throws Exception {
         if(eventBus == null) {
             throw new Exception("EventBus not set");
         }

@@ -62,7 +62,7 @@ public class EventBus {
     //endregion
 
     //region messaging
-    public void broadcast(AbstractEvent event, Object sender) {
+    public void broadcast(Event event, Object sender) {
         for(EventListener listener : registeredObjects) {
             if(sender instanceof EventListener && listener == sender) continue;
             listener.recieveEvent(event);

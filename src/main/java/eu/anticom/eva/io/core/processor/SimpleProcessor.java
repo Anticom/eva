@@ -1,9 +1,6 @@
 package eu.anticom.eva.io.core.processor;
 
-import eu.anticom.eva.event.AbstractEvent;
-import eu.anticom.eva.event.EventEmitter;
-import eu.anticom.eva.event.InputEvent;
-import eu.anticom.eva.event.OutputEvent;
+import eu.anticom.eva.event.*;
 
 import java.util.Date;
 
@@ -12,9 +9,9 @@ import java.util.Date;
  */
 public class SimpleProcessor extends EventEmitter implements Processor {
     @Override
-    public void recieveEvent(AbstractEvent event) {
-        if(event instanceof InputEvent) {
-            String sentence = ((InputEvent) event).getSentence();
+    public void recieveEvent(Event event) {
+        if(event.getEventType() == EventType.INPUT) {
+            String sentence = (String) event.getData();
 
             if(sentence.contains("time is it")) {
                 try {
@@ -27,7 +24,7 @@ public class SimpleProcessor extends EventEmitter implements Processor {
                     }
                     String dateString = date.getMinutes() + " past " + hourString;
 
-                    emit(new OutputEvent("It is " + dateString));
+                    emit(new Event(EventType.OUTPUT, this, "It is " + dateString));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -35,7 +32,7 @@ public class SimpleProcessor extends EventEmitter implements Processor {
 
             if(sentence.contains("who are you?")) {
                 try {
-                    emit(new OutputEvent("My name is EVA."));
+                    emit(new Event(EventType.OUTPUT, this, "My name is EVA"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -43,7 +40,7 @@ public class SimpleProcessor extends EventEmitter implements Processor {
 
             if(sentence.contains("what are you?")) {
                 try {
-                    emit(new OutputEvent("EVA stands for Electronic Virtual Assistant. I'm here to help you out basically."));
+                    emit(new Event(EventType.OUTPUT, this, "EVA stands for Electronic Virtual Assistant. I'm here to help you out basically."));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -51,7 +48,7 @@ public class SimpleProcessor extends EventEmitter implements Processor {
 
             if(sentence.contains("hello")) {
                 try {
-                    emit(new OutputEvent("Hi!"));
+                    emit(new Event(EventType.OUTPUT, this, "Hi!"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -64,7 +61,7 @@ public class SimpleProcessor extends EventEmitter implements Processor {
             if(sentence.startsWith("say:")) {
                 String toSay = sentence.substring(4);
                 try {
-                    emit(new OutputEvent(toSay));
+                    emit(new Event(EventType.OUTPUT, this, toSay));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

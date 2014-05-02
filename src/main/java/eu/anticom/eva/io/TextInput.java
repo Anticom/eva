@@ -4,8 +4,9 @@ import eu.anticom.eva.event.*;
 
 import java.util.Scanner;
 
-public class TextInput extends EventEmitter implements IOModule, Runnable {
+public class TextInput extends EventEmitter implements IOModule {
     protected boolean running;
+
     protected Scanner scanner;
 
     public TextInput() {
@@ -14,14 +15,14 @@ public class TextInput extends EventEmitter implements IOModule, Runnable {
 
     @Override
     public void boot() {
-        scanner = new Scanner(System.in);
         running = true;
+        scanner = new Scanner(System.in);
     }
 
     @Override
     public void shutdown() {
         running = false;
-
+        scanner.close();
     }
 
     @Override
@@ -30,7 +31,7 @@ public class TextInput extends EventEmitter implements IOModule, Runnable {
             System.out.print("eva < ");
             String input = scanner.nextLine();
 
-            InputEvent event = new InputEvent(input);
+            Event event = new Event(EventType.INPUT, this, input);
 
             try {
                 emit(event);
@@ -38,6 +39,5 @@ public class TextInput extends EventEmitter implements IOModule, Runnable {
                 e.printStackTrace();
             }
         }
-        scanner.close();
     }
 }

@@ -184,7 +184,9 @@ public class Eva {
             e.printStackTrace();
         }
 
-        ((IOModule) core).boot();
+        if (((IOModule) core) != null) {
+            ((IOModule) core).boot();
+        }
 
         inputChannels.put("core", (EventEmitter) core);
         outputChannels.put("core", (EventListener) core);
@@ -211,12 +213,6 @@ public class Eva {
 
             it.remove(); // avoids a ConcurrentModificationException
         }
-
-        /*
-        inputChannels.put("text", new TextInput());
-        //inputChannels.put("audio", new AudioInput(getAudioInputConfiguration()));
-        inputChannels.put("visual", new VisualInput());
-        */
     }
 
     protected void loadOutputs() {
@@ -240,12 +236,6 @@ public class Eva {
 
             it.remove(); // avoids a ConcurrentModificationException
         }
-
-        /*
-        outputChannels.put("text", new TextOutput());
-        outputChannels.put("audio", new AudioOutput());
-        outputChannels.put("hands", new Hands());
-        */
     }
 
     protected void registerIO() {

@@ -7,5 +7,5 @@ import eu.anticom.eva.event.EventListener;
  * They can act on the output channels and/or fire other events
  */
 public interface Processor extends EventListener {
-    //public Voting input(InputEvent event);
+    //public Voting input(Event event);
 }

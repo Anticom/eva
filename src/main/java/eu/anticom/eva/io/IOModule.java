@@ -1,6 +1,6 @@
 package eu.anticom.eva.io;
 
-public interface IOModule {
+public interface IOModule extends Runnable {
     //initialisation (allocate resources etc.)
     public void boot();
     //final shutdown

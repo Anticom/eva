@@ -1,20 +1,31 @@
 package eu.anticom.eva.io;
 
-import eu.anticom.eva.event.AbstractEvent;
+import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventListener;
-import eu.anticom.eva.event.OutputEvent;
+import eu.anticom.eva.event.EventType;
 
 public class TextOutput implements IOModule, EventListener {
-    @Override
-    public void boot() {}
+    protected boolean running;
 
     @Override
-    public void shutdown() {}
+    public void boot() {
+        running = true;
+    }
 
     @Override
-    public void recieveEvent(AbstractEvent event) {
-        if(event instanceof OutputEvent) {
-            System.out.println("eva > " + ((OutputEvent) event).getResult());
+    public void shutdown() {
+        running = false;
+    }
+
+    @Override
+    public void run() {
+
+    }
+
+    @Override
+    public void recieveEvent(Event event) {
+        if(event.getEventType() == EventType.OUTPUT) {
+            System.out.println("eva > " + event.getData());
         }
     }
 }

@@ -2,34 +2,43 @@ package eu.anticom.eva.io;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
-import eu.anticom.eva.event.AbstractEvent;
+import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventListener;
-import eu.anticom.eva.event.OutputEvent;
+import eu.anticom.eva.event.EventType;
 
-public class AudioOutput implements IOModule, Runnable, EventListener {
-    protected static final String VOICE_NAME = "kevin16";
+public class AudioOutput implements IOModule, EventListener {
+    protected boolean running;
+
     protected Voice voice;
+
+    protected static final String VOICE_NAME = "kevin16";
 
     @Override
     public void boot() {
+        running = true;
+
+        VoiceManager voiceManager = VoiceManager.getInstance();
+        voice = voiceManager.getVoice(VOICE_NAME);
+        voice.allocate();
+
         listAllVoices();
     }
 
     @Override
-    public void shutdown() {}
-
-    @Override
-    public void run() {
-        VoiceManager voiceManager = VoiceManager.getInstance();
-        voice = voiceManager.getVoice(VOICE_NAME);
-        voice.allocate();
-        //voice.deallocate();
+    public void shutdown() {
+        running = false;
+        voice.deallocate();
     }
 
     @Override
-    public void recieveEvent(AbstractEvent event) {
-        if(event instanceof OutputEvent) {
-            String text = ((OutputEvent) event).getResult();
+    public void run() {
+
+    }
+
+    @Override
+    public void recieveEvent(Event event) {
+        if(event.getEventType() == EventType.OUTPUT) {
+            String text = (String) event.getData();
             voice.speak(text);
         }
 //        System.out.println(this.getClass().toString() + " recieved event:");
