@@ -1,13 +1,29 @@
 package eu.anticom.eva.io.core.processor;
 
 import eu.anticom.eva.event.*;
+import eu.anticom.eva.io.Module;
 
 import java.util.Date;
 
 /**
  * Listens for exact phrases
  */
-public class SimpleProcessor extends Processor implements EventListener {
+public class SimpleProcessor extends Module {
+    @Override
+    public void boot() {
+
+    }
+
+    @Override
+    public void shutdown() {
+
+    }
+
+    @Override
+    public void run() {
+
+    }
+
     @Override
     public void recieveEvent(Event event) {
         if(event.getEventType() == EventType.INPUT) {
@@ -20,66 +36,47 @@ public class SimpleProcessor extends Processor implements EventListener {
 
             if((!event.isHandled()) && sentence.startsWith("say:")) {
                 String toSay = sentence.substring(4);
-                try {
-                    emit(new Event(EventType.OUTPUT, this, toSay));
-                    event.markHandled();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                emit(new Event(EventType.OUTPUT, this, toSay));
+                event.markHandled();
             }
 
             if((!event.isHandled()) && sentence.contains("time is it")) {
-                try {
-                    Date date = new Date();
+                Date date = new Date();
 
-                    StringBuilder dateString = new StringBuilder();
-                    dateString.append("It's");
+                StringBuilder dateString = new StringBuilder();
+                dateString.append("It's");
 
-                    Integer minutes = date.getMinutes();
-                    if(minutes == 0) {
-                        //nothing here
-                    } else if(minutes <= 30) {
-                        dateString.append(" ").append(String.valueOf(minutes));
-                        dateString.append(" ").append("past");
-                    } else {
-                        dateString.append(" ").append(String.valueOf((60 - minutes)));
-                        dateString.append(" ").append("to");
-                    }
-
-                    dateString.append(" ").append(String.valueOf(date.getHours()));
-
-                    emit(new Event(EventType.OUTPUT, this, dateString.toString()));
-                    event.markHandled();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                Integer minutes = date.getMinutes();
+                if(minutes == 0) {
+                    //nothing here
+                } else if(minutes <= 30) {
+                    dateString.append(" ").append(String.valueOf(minutes));
+                    dateString.append(" ").append("past");
+                } else {
+                    dateString.append(" ").append(String.valueOf((60 - minutes)));
+                    dateString.append(" ").append("to");
                 }
+
+                dateString.append(" ").append(String.valueOf(date.getHours()));
+
+                emit(new Event(EventType.OUTPUT, this, dateString.toString()));
+                event.markHandled();
             }
 
             if((!event.isHandled()) && sentence.contains("who are you?")) {
-                try {
-                    emit(new Event(EventType.OUTPUT, this, "My name is EVA"));
-                    event.markHandled();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                emit(new Event(EventType.OUTPUT, this, "My name is EVA"));
+                event.markHandled();
             }
 
             if((!event.isHandled()) && sentence.contains("what are you?")) {
-                try {
-                    emit(new Event(EventType.OUTPUT, this, "EVA is a acronym for Electronic Virtual Assistant."));
-                    event.markHandled();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                emit(new Event(EventType.OUTPUT, this, "EVA is a acronym for Electronic Virtual Assistant."));
+                event.markHandled();
             }
 
             if((!event.isHandled()) && sentence.contains("hello")) {
-                try {
-                    emit(new Event(EventType.OUTPUT, this, "Hi!"));
-                    event.markHandled();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                emit(new Event(EventType.OUTPUT, this, "Hi!"));
+                event.markHandled();
             }
         }
     }

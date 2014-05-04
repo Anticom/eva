@@ -19,12 +19,6 @@ public class AudioInput extends Module implements IModule {
     protected LiveSpeechRecognizer lsr;
     protected StreamSpeechRecognizer ssr;
 
-    //region constructors
-    public AudioInput() {
-
-    }
-    //endregion
-
     @Override
     public void boot() {
         running = true;
@@ -74,11 +68,7 @@ public class AudioInput extends Module implements IModule {
             speechResult = listen();
             String hypothesis = speechResult.getHypothesis();
             if(!hypothesis.isEmpty()) {
-                try {
-                    emit(new Event(EventType.INPUT, this, hypothesis));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                emit(new Event(EventType.INPUT, this, hypothesis));
             }
         }
     }

@@ -9,3 +9,6 @@ release.properties
 #intellij
 eva.iml
 .idea/
+
+#project
+src/main/java/eu/anticom/eva/test/

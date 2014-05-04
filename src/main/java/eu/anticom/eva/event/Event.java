@@ -1,7 +1,5 @@
 package eu.anticom.eva.event;
 
-import eu.anticom.eva.io.IModule;
-
 import java.util.Date;
 import java.util.UUID;
 

@@ -2,14 +2,11 @@ package eu.anticom.eva;
 
 import eu.anticom.eva.config.Configuration;
 import eu.anticom.eva.event.EventBus;
-import eu.anticom.eva.event.EventEmitter;
-import eu.anticom.eva.event.EventListener;
 import eu.anticom.eva.hooks.ShutdownHook;
 import eu.anticom.eva.io.*;
 import eu.anticom.eva.util.ClassLoader;
 
 import java.io.*;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,8 +16,7 @@ public class Eva {
     protected Configuration configuration = new Configuration();
 
     //region io
-    protected ConcurrentHashMap<String, IModule> inputChannels = new ConcurrentHashMap<String, IModule>();
-    protected ConcurrentHashMap<String, IModule> outputChannels = new ConcurrentHashMap<String, IModule>();
+    protected ConcurrentHashMap<String, IModule> modules = new ConcurrentHashMap<String, IModule>();
     //endregion
 
     //region constants
@@ -45,9 +41,7 @@ public class Eva {
         setSystemProperties();
 
         //region set up io
-        loadCore();
-        loadInputs();
-        loadOutputs();
+        loadModules();
         registerIO();
         System.out.println("All modules loaded, booted and configured");
 
@@ -70,13 +64,6 @@ public class Eva {
 
     //region getters
 
-    /**
-     * @deprecated
-     */
-    public Core getCore() {
-        return (Core) inputChannels.get("core");
-    }
-
     public EventBus getEventBus() {
         return eventBus;
     }
@@ -85,54 +72,50 @@ public class Eva {
         return configuration;
     }
 
-    public ConcurrentHashMap<String, IModule> getInputChannels() {
-        return inputChannels;
-    }
-
-    public ConcurrentHashMap<String, IModule> getOutputChannels() {
-        return outputChannels;
+    public ConcurrentHashMap<String, IModule> getModules() {
+        return modules;
     }
 
     /**
      * @deprecated
      */
     public TextInput getTextInput() {
-        return (TextInput) inputChannels.get("text");
+        return (TextInput) modules.get("textInput");
     }
 
     /**
      * @deprecated
      */
     public TextOutput getTextOutput() {
-        return (TextOutput) outputChannels.get("text");
+        return (TextOutput) modules.get("textOutput");
     }
 
     /**
      * @deprecated
      */
     public AudioInput getAudioInput() {
-        return (AudioInput) inputChannels.get("audio");
+        return (AudioInput) modules.get("audioInput");
     }
 
     /**
      * @deprecated
      */
     public AudioOutput getAudioOutput() {
-        return (AudioOutput) outputChannels.get("audio");
+        return (AudioOutput) modules.get("audioOutput");
     }
 
     /**
      * @deprecated
      */
     public VisualInput getVisualInput() {
-        return (VisualInput) inputChannels.get("visual");
+        return (VisualInput) modules.get("visualInput");
     }
 
     /**
      * @deprecated
      */
     public Hands getHands() {
-        return (Hands) outputChannels.get("hands");
+        return (Hands) modules.get("handsOutput");
     }
 
     //endregion
@@ -176,25 +159,8 @@ public class Eva {
         }
     }
 
-    protected void loadCore() {
-        String className = configuration.get("eva.io.core");
-        IModule core = null;
-        try {
-            core = (IModule) ClassLoader.load(className);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (core != null) {
-            core.boot();
-        }
-
-        inputChannels.put("core", core);
-        outputChannels.put("core", core);
-    }
-
-    protected void loadInputs() {
-        ConcurrentHashMap<String, String> inputProperties = configuration.filter("eva.io.input");
+    protected void loadModules() {
+        ConcurrentHashMap<String, String> inputProperties = configuration.filter("eva.io");
         Iterator it = inputProperties.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry property = (Map.Entry) it.next();
@@ -207,31 +173,9 @@ public class Eva {
                 IModule module = (IModule) ClassLoader.load(val);
                 System.out.printf("Booting module: [%s]\n", val);
                 module.boot();
-                inputChannels.put(key, module);
+                modules.put(key, module);
             } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            it.remove(); // avoids a ConcurrentModificationException
-        }
-    }
-
-    protected void loadOutputs() {
-        ConcurrentHashMap<String, String> inputProperties = configuration.filter("eva.io.output");
-        Iterator it = inputProperties.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry property = (Map.Entry) it.next();
-
-            String key = (String) property.getKey();
-            String val = (String) property.getValue();
-
-            try {
-                System.out.printf("Loading module: [%s]\n", val);
-                IModule module = (IModule) eu.anticom.eva.util.ClassLoader.load(val);
-                System.out.printf("Booting module: [%s]\n", val);
-                module.boot();
-                outputChannels.put(key, module);
-            } catch (Exception e) {
+                System.err.printf("Unable to load module class: [%s]\n", val);
                 e.printStackTrace();
             }
 
@@ -240,14 +184,14 @@ public class Eva {
     }
 
     protected void registerIO() {
-        //region add inputChannels & outputChannels to bus
-        eventBus.register(outputChannels.elements());
-        eventBus.connectEmitters(inputChannels.elements());
+        //region add modules to bus
+        eventBus.register(modules.elements());
+        eventBus.connectEmitters(modules.elements());
         //endregion
 
         //region threads
-        textInputThread = new Thread((Runnable) inputChannels.get("text"));
-        audioOutputThread = new Thread((Runnable) outputChannels.get("audio"));
+        textInputThread = new Thread((Runnable) modules.get("textInput"));
+        audioOutputThread = new Thread((Runnable) modules.get("audioOutput"));
         //endregion
     }
     //endregion
