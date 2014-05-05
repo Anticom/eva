@@ -10,14 +10,13 @@ public class Core extends Module implements IModule {
 
     protected Environment environment;  //stuff like time, date, own location
 
-    protected ProcessorList processors;
+    protected ProcessorList processors = new ProcessorList();;
     protected Integer context;      //topic history, but also word context, speaker, is eva meant with what is said?
 
     public Core() {
         environment = new Environment();
 
-        processors = new ProcessorList();
-        processors.add(new SimpleProcessor());
+        //processors.add(new SimpleProcessor());
         //eventBus.register((Processor[]) processors.toArray());
     }
 

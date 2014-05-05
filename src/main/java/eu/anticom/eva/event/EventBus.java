@@ -59,9 +59,9 @@ public class EventBus {
     //endregion
 
     //region messaging
-    public void broadcast(Event event, Object sender) {
+    public void broadcast(Event event) {
         for(IModule listener : registeredObjects) {
-            if(sender instanceof IModule && listener == sender) continue;
+            if(event.getOrigin() == listener) continue;
             listener.recieveEvent(event);
         }
     }

@@ -15,6 +15,6 @@ public class EventEmitter {
         if(eventBus == null) {
             throw new Exception("EventBus not set");
         }
-        eventBus.broadcast(event, this);
+        eventBus.broadcast(event);
     }
 }

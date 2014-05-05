@@ -9,10 +9,6 @@ public class TextInput extends Module implements IModule {
 
     protected Scanner scanner;
 
-    public TextInput() {
-
-    }
-
     @Override
     public void boot() {
         running = true;
@@ -31,13 +27,7 @@ public class TextInput extends Module implements IModule {
             System.out.print("eva < ");
             String input = scanner.nextLine();
 
-            Event event = new Event(EventType.INPUT, this, input);
-
-            try {
-                emit(event);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            emit(new Event(EventType.INPUT, this, input));
         }
     }
 }
