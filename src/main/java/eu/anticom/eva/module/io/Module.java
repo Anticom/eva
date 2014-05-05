@@ -1,24 +1,23 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
 import eu.anticom.eva.event.Event;
 import eu.anticom.eva.event.EventBus;
 
 public abstract class Module implements IModule {
+    
     protected EventBus eventBus;
 
     @Override
-    public void recieveEvent(Event event) {
-        //do nothing by default
-    }
+    public void recieveEvent(Event event) {}
 
     @Override
-    public abstract void boot();
+    public void boot() {}
 
     @Override
-    public abstract void shutdown();
+    public void shutdown() {}
 
     @Override
-    public abstract void run();
+    public void run() {}
 
     public void setEventBus(EventBus eventBus) {
         this.eventBus = eventBus;

@@ -3,14 +3,14 @@ eva
 
 ## Electronic Virtual Assist
 
-EVA is an event driven and multi threaded system, that should allow native human interaction.
+EVA is an event driven and multi threaded system, that should be capable to interact with humen natively.
 
 
 EVA is supposed to act in the real world and do other tasks you tell it to do.
 I'm looking forward to write some Arduino code to serve a generic API to enable real world devices to "talk" to eva.
 
 
-It has an understanding of contexts (well... not currently) and a variety of processors (also not yet :P), that are able
+EVA has an understanding of contexts (well... not currently) and thinking modules (also not yet :P), that are able
 to act on what you've said before and who you're saying it to.
 
 

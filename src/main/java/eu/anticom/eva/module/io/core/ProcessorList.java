@@ -1,7 +1,7 @@
-package eu.anticom.eva.io.core;
+package eu.anticom.eva.module.io.core;
 
 import eu.anticom.eva.event.Event;
-import eu.anticom.eva.io.core.processor.Processor;
+import eu.anticom.eva.module.processor.Processor;
 
 import java.util.ArrayList;
 

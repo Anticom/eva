@@ -2,8 +2,10 @@ package eu.anticom.eva.hooks;
 
 import eu.anticom.eva.Eva;
 import eu.anticom.eva.event.Event;
-import eu.anticom.eva.event.EventEmitter;
 import eu.anticom.eva.event.EventType;
+import eu.anticom.eva.module.io.IModule;
+
+import java.util.Enumeration;
 
 public class ShutdownHook implements Runnable {
     protected Eva eva;
@@ -15,7 +17,7 @@ public class ShutdownHook implements Runnable {
     @Override
     public void run() {
         //TODO emit an output event instead of direct speaking
-        this.eva.getEventBus().broadcast(
+        eva.getEventBus().broadcast(
                 new Event(
                         EventType.OUTPUT,
                         this,
@@ -24,6 +26,11 @@ public class ShutdownHook implements Runnable {
         );
 
         //shutdown io's
-        //TODO
+        Enumeration<IModule> modules = eva.getModules().elements();
+        while(modules.hasMoreElements()) {
+            IModule module = modules.nextElement();
+            System.out.printf("Shutting down module: [%s]\n", module.getClass().toString());
+            module.shutdown();
+        }
     }
 }

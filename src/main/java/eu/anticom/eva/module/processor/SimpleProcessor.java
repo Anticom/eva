@@ -1,7 +1,8 @@
-package eu.anticom.eva.io.core.processor;
+package eu.anticom.eva.module.processor;
 
-import eu.anticom.eva.event.*;
-import eu.anticom.eva.io.Module;
+import eu.anticom.eva.event.Event;
+import eu.anticom.eva.event.EventType;
+import eu.anticom.eva.module.io.Module;
 
 import java.util.Date;
 

@@ -1,8 +1,8 @@
 package eu.anticom.eva.event;
 
-import eu.anticom.eva.io.IModule;
-import eu.anticom.eva.io.core.ProcessorList;
-import eu.anticom.eva.io.core.processor.Processor;
+import eu.anticom.eva.module.io.IModule;
+import eu.anticom.eva.module.io.core.ProcessorList;
+import eu.anticom.eva.module.processor.Processor;
 
 import java.util.Enumeration;
 import java.util.Vector;

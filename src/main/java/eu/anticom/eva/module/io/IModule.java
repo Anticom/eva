@@ -1,4 +1,4 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
 import eu.anticom.eva.event.EventBus;
 import eu.anticom.eva.event.EventListener;

@@ -1,9 +1,9 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
 import eu.anticom.eva.event.Event;
-import eu.anticom.eva.event.EventListener;
+import eu.anticom.eva.event.EventType;
 
-public class Hands extends Module {
+public class TextOutput extends Module {
     protected boolean running;
 
     @Override
@@ -21,7 +21,8 @@ public class Hands extends Module {
 
     @Override
     public void recieveEvent(Event event) {
-//        System.out.println(this.getClass().toString() + " recieved event:");
-//        System.out.println(event);
+        if(event.getEventType() == EventType.OUTPUT) {
+            System.out.println("eva > " + event.getData());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
 public class VisualInput extends Module implements IModule {
     protected boolean running;

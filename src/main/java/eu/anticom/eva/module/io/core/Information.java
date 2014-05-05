@@ -1,4 +1,4 @@
-package eu.anticom.eva.io.core;
+package eu.anticom.eva.module.io.core;
 
 public class Information {
 

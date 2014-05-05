@@ -1,9 +1,8 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 import eu.anticom.eva.event.Event;
-import eu.anticom.eva.event.EventListener;
 import eu.anticom.eva.event.EventType;
 
 public class AudioOutput extends Module {

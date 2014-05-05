@@ -1,11 +1,10 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import eu.anticom.eva.event.Event;
-import eu.anticom.eva.event.EventEmitter;
 import eu.anticom.eva.event.EventType;
 
 import java.io.File;

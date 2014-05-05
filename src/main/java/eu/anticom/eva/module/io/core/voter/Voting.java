@@ -1,4 +1,4 @@
-package eu.anticom.eva.io.core.voter;
+package eu.anticom.eva.module.io.core.voter;
 
 public class Voting {
     public enum Vote {

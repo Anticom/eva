@@ -1,6 +1,7 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
-import eu.anticom.eva.event.*;
+import eu.anticom.eva.event.Event;
+import eu.anticom.eva.event.EventType;
 
 import java.util.Scanner;
 
@@ -25,9 +26,10 @@ public class TextInput extends Module implements IModule {
     public void run() {
         while(running) {
             System.out.print("eva < ");
-            String input = scanner.nextLine();
-
-            emit(new Event(EventType.INPUT, this, input));
+            if(scanner.hasNextLine()) {
+                String input = scanner.nextLine();
+                emit(new Event(EventType.INPUT, this, input));
+            }
         }
     }
 }

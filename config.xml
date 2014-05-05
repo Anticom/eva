@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <system>
-
+        <property key="freetts.voices" value="com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory"/>
+        <!--<property key="freetts.voices" value="com.sun.speech.freetts.en.us.cmu_time_awb.AlanVoiceDirectory"/>-->
     </system>
     <eva>
+        <core>
+            <event-bus class="eu.anticom.eva.event.EventBus"/>
+            <module-manager class="eu.anticom.eva.ModuleManager"/>
+        </core>
+
         <modules>
-            <core>
-                <class>eu.anticom.eva.io.Core</class>
+            <!-- IOs -->
+            <module class="eu.anticom.eva.module.io.TextInput"/>
+            <module class="eu.anticom.eva.module.io.TextOutput"/>
+            <module class="eu.anticom.eva.module.io.AudioInput"/>
+            <module class="eu.anticom.eva.module.io.AudioOutput"/>
 
-                <processors>
-                    <processor>
-                        <class>eu.anticom.eva.io.core.processor.SimpleProcessor</class>
-                    </processor>
-                </processors>
-            </core>
+            <module class="eu.anticom.eva.module.io.VisualInput"/>
+            <module class="eu.anticom.eva.module.io.Hands"/>
 
-            <module>
-                <class>eu.anticom.eva.io.TextInput</class>
-            </module>
-            <module>
-                <class>eu.anticom.eva.io.AudioInput</class>
-            </module>
-            <module>
-                <class>eu.anticom.eva.io.VisualInput</class>
-            </module>
-
-            <module>
-                <class>eu.anticom.eva.io.TextOutput</class>
-            </module>
-            <module>
-                <class>eu.anticom.eva.io.AudioOutput</class>
-            </module>
-            <module>
-                <class>eu.anticom.eva.io.Hands</class>
-            </module>
+            <!-- Processors -->
+            <module class="eu.anticom.eva.module.processor.SimpleProcessor"/>
         </modules>
     </eva>
 </config>

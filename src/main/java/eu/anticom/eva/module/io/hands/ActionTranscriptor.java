@@ -1,4 +1,4 @@
-package eu.anticom.eva.io.hands;
+package eu.anticom.eva.module.io.hands;
 
 public interface ActionTranscriptor {
     public void byDevice();

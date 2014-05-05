@@ -1,9 +1,9 @@
-package eu.anticom.eva.io;
+package eu.anticom.eva.module.io;
 
-import eu.anticom.eva.event.*;
-import eu.anticom.eva.io.core.Environment;
-import eu.anticom.eva.io.core.ProcessorList;
-import eu.anticom.eva.io.core.processor.SimpleProcessor;
+import eu.anticom.eva.event.Event;
+import eu.anticom.eva.event.EventBus;
+import eu.anticom.eva.module.io.core.Environment;
+import eu.anticom.eva.module.io.core.ProcessorList;
 
 public class Core extends Module implements IModule {
     protected boolean running;
