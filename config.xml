@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <system>
+
+    </system>
+    <eva>
+        <modules>
+            <core>
+                <class>eu.anticom.eva.io.Core</class>
+
+                <processors>
+                    <processor>
+                        <class>eu.anticom.eva.io.core.processor.SimpleProcessor</class>
+                    </processor>
+                </processors>
+            </core>
+
+            <module>
+                <class>eu.anticom.eva.io.TextInput</class>
+            </module>
+            <module>
+                <class>eu.anticom.eva.io.AudioInput</class>
+            </module>
+            <module>
+                <class>eu.anticom.eva.io.VisualInput</class>
+            </module>
+
+            <module>
+                <class>eu.anticom.eva.io.TextOutput</class>
+            </module>
+            <module>
+                <class>eu.anticom.eva.io.AudioOutput</class>
+            </module>
+            <module>
+                <class>eu.anticom.eva.io.Hands</class>
+            </module>
+        </modules>
+    </eva>
+</config>
